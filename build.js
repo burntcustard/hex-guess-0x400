@@ -2,30 +2,16 @@ const browserSync = require('browser-sync').create();
 const c = require('ansi-colors');
 const fs = require('fs');
 const terser = require('terser');
+const csso = require('csso');
+
+// Enabled/Disables browserSync live reloading rather than just building once
+const DEVMODE = process.argv.slice(2).includes('--watch');
 
 /**
- * Formats a duration number (ms) into a nice looking string with ansi-colors
- * @param  {number} duration Duration in milliseconds
- * @return {string}          Nicely formatted color string
- */
-function formatMs(duration) {
-    return c.magentaBright(duration.toString().padStart(4, ' ') + ' ms');
-}
-
-/**
- * Console logs a duration (in milliseconds), a fancy arrow char, and a string
- * @param  {number} duration   [description]
- * @param  {string} outputFile [description]
- */
-function logOutput(duration, outputFile) {
-    console.log(`${formatMs(duration)} ↪ ${outputFile}`);
-}
-
-/**
- * Minify the JS bundle. Includes using preprocess to remove debug messages.
+ * Minify the JS bundle.
  * @return {object} Output code from terser.minify
  */
-function minify() {
+function minifyJS() {
     const startTime = Date.now();
     const options = {
         compress: {
@@ -34,8 +20,8 @@ function minify() {
             unsafe_arrows: true,
             unsafe_comps: true,
             unsafe_math: true,
-            // unsafe_proto: true, // ~ 3 bytes
-            booleans_as_integers: true // ~ 20 bytes if really needed
+            // unsafe_proto: true,
+            booleans_as_integers: true
         },
         mangle: {
             properties: {
@@ -63,32 +49,24 @@ function minify() {
     result.code = result.code.replace(/^\!function\(\){/, '');
     result.code = result.code.replace(/}\(\);/, '');
 
-    // fs.writeFileSync('dist/main.min.js', result.code);
-    // if (result.map) {
-    //     fs.writeFileSync('dist/main.min.js.map', result.map);
-    // }
-
-    //fs.writeFileSync('cacheFile', JSON.stringify(options.nameCache), "utf8");
-
-    //logOutput(Date.now() - startTime, 'dist/main.min.js');
-
     return result.code;
 }
 
-function inline(minifiedJS) {
-    var startTime = Date.now();
+function minifyCSS() {
+  const css = fs.readFileSync('src/style.css', 'utf8');
+  return csso.minify(css).css;
+}
 
+function inline(minifiedJS, minifiedCSS) {
+    const startTime = Date.now();
+    const html = fs.readFileSync('src/index.html', 'utf8').trim();
     console.log('Inlining JS...');
-
-    const html = fs.readFileSync('src/index.html', 'utf8');
 
     fs.writeFileSync(
         'index.html',
         // Prepend <body> so browsersync can insert its script in dev mode
-        `${html.trim()}<script>${minifiedJS}</script>`
+        `<style>${minifiedCSS}</style>${html}<script>${minifiedJS}</script>`
     );
-
-    logOutput(Date.now() - startTime, 'index.html');
 
     return true;
 }
@@ -104,7 +82,7 @@ function drawSize(used) {
     const barWidth = process.stdout.columns - 26;
     const usedBarWidth = Math.round((barWidth / 100) * usedPercent);
     const usedStr = (used + ' B').padStart(7, ' ');
-    const limitStr = ((limit / 1024).toFixed(0) + ' KB').padEnd(5, ' ');
+    const limitStr = (limit + ' B').padEnd(5, ' ');
 
     var output = usedStr + ' / ' + limitStr +  ' [';
     for (let i = 0; i < barWidth; i++) {
@@ -116,33 +94,40 @@ function drawSize(used) {
     console.log(output);
 }
 
-let fsWait = false;
-fs.watch('src', (event, filename) => {
-  if (filename) {
-    if (fsWait) return;
-    fsWait = setTimeout(() => {
-      fsWait = false;
-    }, 100);
-    console.log(`${filename} file Changed`);
-    inline(minify());
-    drawSize(fs.statSync('index.html')['size']);
-  }
-});
+function watch() {
+  let fsWait = false;
+  fs.watch('src', (event, filename) => {
+    if (filename) {
+      if (fsWait) return;
+      fsWait = setTimeout(() => {
+        fsWait = false;
+      }, 100);
+      console.log(`${filename} file Changed`);
+      inline(minifyJS(), minifyCSS());
+      livereload();
+      drawSize(fs.statSync('index.html')['size']);
+    }
+  });
+}
 
 let livereload = () => {
   // On first run, start a web server
   browserSync.init({
-    server: 'dist'
+    server: './'
   });
 
   // On future runs, reload the browser
   livereload = () => {
-    browserSync.reload('dist/index.html');
+    browserSync.reload('index.html');
     return true;
   }
 
   return true;
 };
 
-inline(minify());
+if (DEVMODE) {
+  livereload();
+  watch();
+}
+inline(minifyJS(), minifyCSS());
 drawSize(fs.statSync('index.html')['size']);
