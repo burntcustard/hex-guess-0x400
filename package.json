@@ -1,0 +1,25 @@
+{
+  "name": "hex-guess-400",
+  "version": "1.0.0",
+  "description": "Entry for JS1024 2020 where you have to guess hex colors",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.js",
+    "start": "node build.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burntcustard/hex-guess-400.git"
+  },
+  "author": "John Evans",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/burntcustard/hex-guess-400/issues"
+  },
+  "homepage": "https://github.com/burntcustard/hex-guess-400#readme",
+  "dependencies": {
+    "ansi-colors": "^4.1.1",
+    "browser-sync": "^2.26.7",
+    "terser": "^4.8.0"
+  }
+}
