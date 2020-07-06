@@ -1,3 +1,24 @@
 body {
-  background: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+button {
+  height: 4rem;
+  width: 4rem;
+  border: 0;
+  transition: all .2s;
+  margin: .5rem;
+}
+
+button:disabled {
+  opacity: 0;
 }

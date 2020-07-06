@@ -16,17 +16,17 @@ function minifyJS() {
     const options = {
         compress: {
             passes: 2,
-            unsafe: true,
-            unsafe_arrows: true,
-            unsafe_comps: true,
-            unsafe_math: true,
-            // unsafe_proto: true,
-            booleans_as_integers: true
+            //unsafe: true,
+            //unsafe_arrows: true,
+            //unsafe_comps: true,
+            //unsafe_math: true,
+            //unsafe_proto: true,
+            //booleans_as_integers: true
         },
         mangle: {
             properties: {
                 keep_quoted: true,
-                reserved: [ 'game' ],
+                reserved: [],
             }
         },
         module: true
@@ -46,8 +46,8 @@ function minifyJS() {
     // Don't wrap the game in a function
     // The 2nd replace doesn't use $, in case the closing tag isn't at the end.
     // - That does make it risky, as those chars might be somewhere else too.
-    result.code = result.code.replace(/^\!function\(\){/, '');
-    result.code = result.code.replace(/}\(\);/, '');
+    //result.code = result.code.replace(/^\!function\(\){/, '');
+    //result.code = result.code.replace(/}\(\);/, '');
 
     return result.code;
 }
