@@ -9,28 +9,32 @@ var score = 0;
 
 function newRound() {
   const selectedIndex = Math.floor(Math.random() * 5);
-  var test = 2;
   document.querySelector('div').innerHTML = '';
 
   for (let i = 0; i < 5; i++) {
-    const hex = newHex();
-
+    var hex = newHex();
     var button = document.createElement('button');
-    button.style.background = hex;
 
-    if (i === selectedIndex) {
-      document.querySelector('h1').innerHTML = `score ${score} ${hex}`;
-      button.addEventListener('click', () => {
+    button.style.background = hex;
+    document.querySelector('h1').innerHTML = hex;
+    document.querySelector('p').innerHTML = 'Score: ' + score;
+
+    if (i == selectedIndex) {
+      button.onclick = function() {
+        this.style.color = '#000';
+        this.style.background = 'transparent';
         score++;
-        newRound();
-      });
+        window.setTimeout(() => newRound(), 1500);
+      };
     } else {
-      button.addEventListener('click', (e) => {
-        e.currentTarget.disabled = true;
-      });
+      button.onclick = function() {
+        this.style.color = '#000';
+        this.style.background = 'transparent';
+        this.disabled = true;
+      };
     }
 
-    document.querySelector('div').appendChild(button);
+    document.querySelector('div').append(button);
   }
 }
 

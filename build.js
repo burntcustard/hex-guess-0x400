@@ -34,20 +34,20 @@ function minifyJS() {
             module: true
         },
         regPack: {
-            withMath : false,
-            hash2DContext : true,
-            hashWebGLContext : true,
-            hashAudioContext : true,
-            contextVariableName : 'c',
-            contextType : parseInt(0),
-            reassignVars : true,
-            varsNotReassigned : 'abc',
-            crushGainFactor : parseFloat(1),
-            crushLengthFactor : parseFloat(0),
-            crushCopiesFactor : parseFloat(0),
-            crushTiebreakerFactor : parseInt(1),
-            wrapInSetInterval : false,
-            timeVariableName : ''
+            withMath: false,
+            hash2DContext: true,
+            hashWebGLContext: false,
+            hashAudioContext: false,
+            contextVariableName: 'c',
+            contextType: parseInt(0),
+            reassignVars: true,
+            varsNotReassigned: 'abc',
+            crushGainFactor: parseFloat(1),
+            crushLengthFactor: parseFloat(0),
+            crushCopiesFactor: parseFloat(0),
+            crushTiebreakerFactor: parseInt(1),
+            wrapInSetInterval: false,
+            timeVariableName: ''
         }
     };
 

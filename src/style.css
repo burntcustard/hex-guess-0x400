@@ -1,24 +1,43 @@
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+html {
+  display: grid;
   height: 100%;
 }
 
-div {
-  display: flex;
-  flex-wrap: wrap;
+body {
+  place-self: center;
+  text-align: center;
 }
 
 button {
-  height: 4rem;
-  width: 4rem;
-  border: 0;
-  transition: all .2s;
-  margin: .5rem;
+  height: 6em;
+  width: 6em;
+  margin: .6em;
+  border-radius: 6em;
+  transition: background .5s, opacity .5s 1s, color .5s;
+  border: 3px solid #fff;
+  color: transparent;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #000;
+}
+
+button::-moz-focus-inner {
+  border: none;
+}
+
+button:after {
+  display: inline;
+  content: 'Correct!';
 }
 
 button:disabled {
+  outline: none;
+  box-shadow: 0 0 0 3px #000;
   opacity: 0;
+}
+
+button:disabled:after {
+  content: 'Wrong!';
 }
