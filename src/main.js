@@ -5,13 +5,14 @@ function newHex() {
   return '#' + r + g + b;
 }
 
-var streak = 1;
+let streak = 1;
+let highscore = 0;
 
 function newRound() {
   let selectedIndex = Math.floor(Math.random() * 5);
   streak = streak || 1;
   document.querySelector('div').innerHTML = '';
-  document.querySelector('p').innerHTML = 'Streak: ' + (streak - 1);
+  document.querySelector('p').innerHTML = 'Streak: ' + (streak - 1) + '<br>Highscore: ' + highscore;
 
   for (let i = 0; i < 5; i++) {
     let hex = newHex();
@@ -23,9 +24,13 @@ function newRound() {
       button.onclick = function() {
         this.style.color = '#000';
         this.style.background = '#fff';
+        this.innerHTML = '✔';
         if (streak) {
           streak++;
-          document.querySelector('p').innerHTML = 'Streak: ' + (streak - 1);
+          if (streak > highscore) {
+            highscore = streak - 1;
+          }
+          document.querySelector('p').innerHTML = 'Streak: ' + (streak - 1) + '<br>Highscore: ' + highscore;
         }
         window.setTimeout(() => newRound(), 1500);
       };
@@ -33,9 +38,10 @@ function newRound() {
       button.onclick = function() {
         this.style.color = '#000';
         this.style.background = '#fff';
+        this.innerHTML = '✘';
         this.disabled = true;
         streak = NaN;
-        document.querySelector('p').innerHTML = 'Streak: broken!';
+        document.querySelector('p').innerHTML = 'Streak: broken! <br>Highscore: ' + highscore;
       };
     }
 

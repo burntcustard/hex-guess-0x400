@@ -8,14 +8,18 @@ body {
   text-align: center;
 }
 
+div {
+  display: flex;
+}
+
 button {
   height: 6em;
   width: 6em;
-  margin: .6em;
+  margin: 9px;
   border-radius: 6em;
   transition: all .5s, opacity .5s 1s;
   border: 3px solid #fff;
-  color: transparent;
+  padding: 0;
 }
 
 button:focus {
@@ -27,17 +31,8 @@ button::-moz-focus-inner {
   border: none;
 }
 
-button:after {
-  display: grid; /* Shorter than 'display: inline' */
-  content: '✔'; /* 'Correct!' */
-}
-
 button:disabled {
   outline: none;
   box-shadow: 0 0 0 3px #000;
   opacity: 0;
-}
-
-button:disabled:after {
-  content: '✘'; /* 'Wrong!' */
 }
