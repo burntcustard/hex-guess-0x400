@@ -1,18 +1,18 @@
 function newHex() {
-  const r = Math.floor(Math.random() * 255).toString(16);
-  const g = Math.floor(Math.random() * 255).toString(16);
-  const b = Math.floor(Math.random() * 255).toString(16);
+  const r = '' + Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
+  const g = '' + Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
+  const b = '' + Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
   return '#' + r + g + b;
 }
 
 var score = 0;
 
 function newRound() {
-  const selectedIndex = Math.floor(Math.random() * 3);
+  const selectedIndex = Math.floor(Math.random() * 5);
   var test = 2;
   document.querySelector('div').innerHTML = '';
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 5; i++) {
     const hex = newHex();
 
     var button = document.createElement('button');

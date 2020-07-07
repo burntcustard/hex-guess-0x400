@@ -51,11 +51,9 @@ function minifyJS() {
         }
     };
 
-    console.log('Minifying JS...');
-
     let code = fs.readFileSync('src/main.js', 'utf8');
 
-    console.log('Terser:');
+    console.log('Minifying JS (Terser)...');
 
     const result = terser.minify(code, options.terser);
 
@@ -68,15 +66,20 @@ function minifyJS() {
     console.log(`stats: ${code.length}B to ${result.code.length}B (-${code.length - result.code.length}B -${((100 / code.length) * (code.length - result.code.length)).toFixed(2)}%)`);
 
     // Regpack
-    console.log('RegPack:');
+    console.log('Minifying JS (RegPack)...');
     var bestVal = regPack.cmdRegPack(result.code, options.regPack);
 
     return bestVal;
 }
 
 function minifyCSS() {
+  console.log('Minifying CSS');
   const css = fs.readFileSync('src/style.css', 'utf8');
-  return csso.minify(css).css;
+  const minifiedCSS = csso.minify(css).css;
+
+  // Duplicate the regPack stats console log but with csso stats
+  console.log(`stats: ${css.length}B to ${minifiedCSS.length}B (-${css.length - minifiedCSS.length}B -${((100 / css.length) * (css.length - minifiedCSS.length)).toFixed(2)}%)`);
+  return minifiedCSS;
 }
 
 function inline(minifiedJS, minifiedCSS) {
