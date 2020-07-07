@@ -28,8 +28,8 @@ button::-moz-focus-inner {
 }
 
 button:after {
-  display: inline;
-  content: 'Correct!';
+  display: grid; /* Shorter than 'display: inline' */
+  content: '✔'; /* 'Correct!' */
 }
 
 button:disabled {
@@ -39,5 +39,5 @@ button:disabled {
 }
 
 button:disabled:after {
-  content: 'Wrong!';
+  content: '✘'; /* 'Wrong!' */
 }

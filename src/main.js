@@ -1,21 +1,21 @@
 function newHex() {
-  const r = '' + Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
-  const g = '' + Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
-  const b = '' + Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
+  let r = Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
+  let g = Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
+  let b = Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
   return '#' + r + g + b;
 }
 
 var streak = 1;
 
 function newRound() {
-  const selectedIndex = Math.floor(Math.random() * 5);
+  let selectedIndex = Math.floor(Math.random() * 5);
   streak = streak || 1;
   document.querySelector('div').innerHTML = '';
   document.querySelector('p').innerHTML = 'Streak: ' + (streak - 1);
 
   for (let i = 0; i < 5; i++) {
-    var hex = newHex();
-    var button = document.createElement('button');
+    let hex = newHex();
+    let button = document.createElement('button');
     button.style.background = hex;
 
     if (i == selectedIndex) {

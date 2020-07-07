@@ -23,7 +23,7 @@ function minifyJS() {
                 //unsafe_comps: true,
                 //unsafe_math: true,
                 //unsafe_proto: true,
-                //booleans_as_integers: true
+                booleans_as_integers: true
             },
             mangle: {
                 properties: {
