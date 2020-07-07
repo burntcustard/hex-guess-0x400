@@ -5,12 +5,13 @@ function newHex() {
   return '#' + r + g + b;
 }
 
-var score = 0;
+var streak = 1;
 
 function newRound() {
   const selectedIndex = Math.floor(Math.random() * 5);
+  streak = streak || 1;
   document.querySelector('div').innerHTML = '';
-  document.querySelector('p').innerHTML = 'Score: ' + score;
+  document.querySelector('p').innerHTML = 'Streak: ' + (streak - 1);
 
   for (let i = 0; i < 5; i++) {
     var hex = newHex();
@@ -21,15 +22,20 @@ function newRound() {
       document.querySelector('h1').innerHTML = hex;
       button.onclick = function() {
         this.style.color = '#000';
-        this.style.background = 'transparent';
-        score++;
+        this.style.background = '#fff';
+        if (streak) {
+          streak++;
+          document.querySelector('p').innerHTML = 'Streak: ' + (streak - 1);
+        }
         window.setTimeout(() => newRound(), 1500);
       };
     } else {
       button.onclick = function() {
         this.style.color = '#000';
-        this.style.background = 'transparent';
+        this.style.background = '#fff';
         this.disabled = true;
+        streak = NaN;
+        document.querySelector('p').innerHTML = 'Streak: broken!';
       };
     }
 

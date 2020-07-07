@@ -13,7 +13,7 @@ button {
   width: 6em;
   margin: .6em;
   border-radius: 6em;
-  transition: background .5s, opacity .5s 1s, color .5s;
+  transition: all .5s, opacity .5s 1s;
   border: 3px solid #fff;
   color: transparent;
 }
