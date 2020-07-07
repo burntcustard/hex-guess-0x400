@@ -21,6 +21,7 @@
     "ansi-colors": "^4.1.1",
     "browser-sync": "^2.26.7",
     "csso": "^4.0.3",
+    "regpack": "^5.0.1",
     "terser": "^4.8.0"
   }
 }

@@ -3,6 +3,7 @@ const c = require('ansi-colors');
 const fs = require('fs');
 const terser = require('terser');
 const csso = require('csso');
+const regPack = require('regpack');
 
 // Enabled/Disables browserSync live reloading rather than just building once
 const DEVMODE = process.argv.slice(2).includes('--watch');
@@ -14,42 +15,63 @@ const DEVMODE = process.argv.slice(2).includes('--watch');
 function minifyJS() {
     const startTime = Date.now();
     const options = {
-        compress: {
-            passes: 2,
-            //unsafe: true,
-            //unsafe_arrows: true,
-            //unsafe_comps: true,
-            //unsafe_math: true,
-            //unsafe_proto: true,
-            //booleans_as_integers: true
+        terser: {
+            compress: {
+                passes: 2,
+                //unsafe: true,
+                //unsafe_arrows: true,
+                //unsafe_comps: true,
+                //unsafe_math: true,
+                //unsafe_proto: true,
+                //booleans_as_integers: true
+            },
+            mangle: {
+                properties: {
+                    keep_quoted: true,
+                    reserved: [],
+                }
+            },
+            module: true
         },
-        mangle: {
-            properties: {
-                keep_quoted: true,
-                reserved: [],
-            }
-        },
-        module: true
+        regPack: {
+            withMath : false,
+            hash2DContext : true,
+            hashWebGLContext : true,
+            hashAudioContext : true,
+            contextVariableName : 'c',
+            contextType : parseInt(0),
+            reassignVars : true,
+            varsNotReassigned : 'abc',
+            crushGainFactor : parseFloat(1),
+            crushLengthFactor : parseFloat(0),
+            crushCopiesFactor : parseFloat(0),
+            crushTiebreakerFactor : parseInt(1),
+            wrapInSetInterval : false,
+            timeVariableName : ''
+        }
     };
 
     console.log('Minifying JS...');
 
     let code = fs.readFileSync('src/main.js', 'utf8');
 
-    const result = terser.minify(code, options);
+    console.log('Terser:');
+
+    const result = terser.minify(code, options.terser);
 
     if (result.error) {
         console.error('Terser minify failed: ', result.error.message);
         return false;
     }
 
-    // Don't wrap the game in a function
-    // The 2nd replace doesn't use $, in case the closing tag isn't at the end.
-    // - That does make it risky, as those chars might be somewhere else too.
-    //result.code = result.code.replace(/^\!function\(\){/, '');
-    //result.code = result.code.replace(/}\(\);/, '');
+    // Duplicate the regPack stats console log but with terser stats
+    console.log(`stats: ${code.length}B to ${result.code.length}B (-${code.length - result.code.length}B -${((100 / code.length) * (code.length - result.code.length)).toFixed(2)}%)`);
 
-    return result.code;
+    // Regpack
+    console.log('RegPack:');
+    var bestVal = regPack.cmdRegPack(result.code, options.regPack);
+
+    return bestVal;
 }
 
 function minifyCSS() {
@@ -60,7 +82,7 @@ function minifyCSS() {
 function inline(minifiedJS, minifiedCSS) {
     const startTime = Date.now();
     const html = fs.readFileSync('src/index.html', 'utf8').trim();
-    console.log('Inlining JS...');
+    console.log('Inlining...');
 
     fs.writeFileSync(
         'index.html',
