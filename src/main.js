@@ -18,6 +18,7 @@ function newRound() {
     let hex = newHex();
     let button = document.createElement('button');
     button.style.background = hex;
+    button.innerHTML = '&nbsp'; // All buttons must have contents to avoid vertical-align issues
 
     if (i == selectedIndex) {
       document.querySelector('h1').innerHTML = hex;
