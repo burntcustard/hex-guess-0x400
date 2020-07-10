@@ -4,34 +4,34 @@ html {
 }
 
 body {
+  margin: 1em;
+  font-family: sans-serif;
+  line-height: 1.4;
   place-self: center;
   text-align: center;
-  line-height: 1.4;
-  font-family: sans-serif;
-  margin: 1em;
 }
 
 button {
-  height: 6em;
   width: 6em;
+  height: 6em;
+  padding: 0;
+  border: 3px solid #fff;
   margin: 9px;
   border-radius: 6em;
   transition: all .5s, opacity .5s 1s;
-  border: 3px solid #fff;
-  padding: 0;
 }
 
 button:focus {
-  outline: none;
   box-shadow: 0 0 0 3px #000;
+  outline: none;
 }
 
 button::-moz-focus-inner {
-  border: none;
+  border: 0;
 }
 
 button:disabled {
-  outline: none;
   box-shadow: 0 0 0 3px #000;
   opacity: 0;
+  outline: none;
 }
