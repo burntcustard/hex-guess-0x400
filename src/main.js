@@ -1,7 +1,7 @@
 function newHex() {
-  let r = Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
-  let g = Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
-  let b = Math.floor(Math.random() * 255).toString(16).padStart(2, '0');
+  let r = (Math.random() * 255 << 0).toString(16).padStart(2, '0'); // (x << 0) is Math.floor
+  let g = (Math.random() * 255 << 0).toString(16).padStart(2, '0');
+  let b = (Math.random() * 255 << 0).toString(16).padStart(2, '0');
   return '#' + r + g + b;
 }
 
@@ -9,7 +9,7 @@ let streak = 1;
 let highscore = 0;
 
 function newRound() {
-  let selectedIndex = Math.floor(Math.random() * 5);
+  let selectedIndex = Math.random() * 5 << 0;
   streak = streak || 1;
   document.querySelector('div').innerHTML = '';
   document.querySelector('p').innerHTML = 'Streak: ' + (streak - 1) + '<br>Highscore: ' + highscore;
